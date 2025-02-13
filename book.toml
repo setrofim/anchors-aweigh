@@ -1,0 +1,38 @@
+[book]
+authors = ["Ben Falk"]
+language = "en"
+multilingual = false
+src = "docs"
+title = "Anchors Aweigh"
+
+# (pair (bare_key) @key (#eq? @key "enum")) @match
+
+[preprocessor.anchors-aweigh]
+
+[preprocessor.anchors-aweigh.queries.rust]
+
+struct = """
+(
+ (line_comment)*
+ .
+ (attribute_item)*
+ .
+ (struct_item name: (type_identifier) @name (#eq? @name "{{name}}"))
+) @match
+"""
+
+enum = """
+(
+ (line_comment)*
+ .
+ (attribute_item)*
+ .
+ (enum_item name: (type_identifier) @name (#eq? @name "{{name}}"))
+) @match
+"""
+
+[preprocessor.anchors-aweigh.queries.toml]
+
+key_val = """
+(pair (bare_key) @key (#eq? @key "{{key}}")) @match
+"""
