@@ -1,6 +1,6 @@
 [package]
 name = "anchors_aweigh"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Ben Falk <benjamin.falk@yahoo.com>"]
 edition = "2024"
 description = "versatile include tag preprocessor for mdbook"

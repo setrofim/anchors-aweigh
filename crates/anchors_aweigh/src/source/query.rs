@@ -41,6 +41,7 @@ impl Query {
         T: AsRef<str>,
     {
         let mut query = Handlebars::new();
+        query.register_escape_fn(handlebars::no_escape);
         query.register_template_string("query", template)?;
         Ok(Self {
             ts_lang: lang.into(),

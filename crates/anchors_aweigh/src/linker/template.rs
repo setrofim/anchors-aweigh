@@ -36,6 +36,7 @@ impl Template {
         T: AsRef<str>,
     {
         let mut handlebars = Handlebars::new();
+        handlebars.register_escape_fn(handlebars::no_escape);
         handlebars
             .register_template_string("tpl", template)
             .map_err(TemplateError::Parse)?;
@@ -86,5 +87,29 @@ impl TemplateList {
             .get(name)
             .ok_or_else(|| TemplateError::TemplateMissing(name.to_owned()))?
             .render_to(linkage, writer)
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use crate::doc::{Decoration, Strategy};
+    use crate::source::SourceList;
+    use crate::support::fixtures;
+
+    use super::*;
+
+    #[test]
+    fn template_render() {
+        let source = SourceList::default()
+            .fetch(fixtures::sample_ruby_filename())
+            .unwrap();
+        let linkage = Linkage {
+            strategy: Strategy::Full,
+            contents: Some(source.contents.clone()),
+            decoration: Decoration::None,
+            source,
+        };
+        let template = Template::new("### Contents: ```ruby\n{{contents}}```").unwrap();
+        template.render(&linkage).unwrap();
     }
 }
